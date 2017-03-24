@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -35,6 +37,9 @@ public class CameraActivity extends AppCompatActivity implements OnUploadImageLi
 
     private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 
+    private TextView txtProgress;
+    private ProgressBar progressBar;
+
     private ImageView imgCamera;
     private Bitmap imageBitmap;
 
@@ -52,6 +57,8 @@ public class CameraActivity extends AppCompatActivity implements OnUploadImageLi
         imgCamera = (ImageView) findViewById(R.id.img_photo);
         btnOpenCamera = (Button) findViewById(R.id.btn_open_camera);
         btnUploadImage = (Button) findViewById(R.id.btn_upload);
+        txtProgress = (TextView) findViewById(R.id.text_progress);
+        progressBar = (ProgressBar) findViewById(R.id.progress);
         imageBitmap = null;
 
         btnOpenCamera.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +86,7 @@ public class CameraActivity extends AppCompatActivity implements OnUploadImageLi
     private void uploadImage() {
 
         FTPUploadImageTask imageTask = new FTPUploadImageTask();
+        imageTask.setContext(this);
         imageTask.setListener(this);
         imageTask.execute(
                 FTP_HOST,
@@ -198,6 +206,7 @@ public class CameraActivity extends AppCompatActivity implements OnUploadImageLi
     private void handleBigCameraPhoto() {
 
         if (currentPath != null) {
+            Log.d("CameraActivity", "Entro a handleBigCameraPhoto");
             setPic();
             galleryAddPic();
             //currentPath = null;
@@ -243,5 +252,24 @@ public class CameraActivity extends AppCompatActivity implements OnUploadImageLi
     @Override
     public void onUploadImageFinish(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onShowProgress() {
+        progressBar.setProgress(0);
+        btnOpenCamera.setVisibility(View.GONE);
+        btnUploadImage.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onHideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onSetProgress(Integer progress) {
+        txtProgress.setText(String.valueOf(progress) + " %");
+        progressBar.setProgress(progress);
     }
 }

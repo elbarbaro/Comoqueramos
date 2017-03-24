@@ -35,4 +35,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_open_camera"
         android:id="@+id/btn_upload" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:id="@+id/text_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_above="@id/progress"
+        android:textSize="20sp"
+        android:text="0%"/>
+
 </RelativeLayout>

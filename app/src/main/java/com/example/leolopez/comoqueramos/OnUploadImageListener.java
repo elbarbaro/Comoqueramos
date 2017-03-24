@@ -6,4 +6,7 @@ package com.example.leolopez.comoqueramos;
 
 public interface OnUploadImageListener {
     void onUploadImageFinish(String message);
+    void onSetProgress(Integer progress);
+    void onHideProgress();
+    void onShowProgress();
 }
